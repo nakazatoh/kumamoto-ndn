@@ -650,10 +650,10 @@ void Producer::processIncomingInterest(/*const Name& name, const Interest& inter
 
         /*if (m_onDataLeavesContext != EMPTY_CALLBACK) {
           m_onDataLeavesContext(*this, *const_cast<Data*>(data));
-        }
+        }*/
 
         m_face->put(*data);
-        std::cout << "process incoming Interest" << std::endl;*/
+//        std::cout << "process incoming Interest" << std::endl;*/
       }
       else {
         if (m_onInterestProcess != EMPTY_CALLBACK) {

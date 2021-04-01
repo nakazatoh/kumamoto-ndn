@@ -101,6 +101,8 @@ ReliableDataRetrieval::start()
   }*/
 
   //send exactly 1 Interest to get the FinalBlockId
+  sendInterest();
+  /*
   m_context->getContextOption(FINAL_BLOCK_ID, m_finalBlockNumber);
   m_isFinalBlockNumberDiscovered = true;
   m_currentWindowSize = m_finalBlockNumber;
@@ -128,6 +130,7 @@ ReliableDataRetrieval::start()
       }
     }
   }
+  */
 
   bool isAsync = false;
   m_context->getContextOption(ASYNC_MODE, isAsync);
@@ -247,7 +250,7 @@ ReliableDataRetrieval::onData(const ndn::Interest& interest, const ndn::Data& da
     onContentData(interest, data);
   }
 
-  /*if (segment == 0) // if it was the first Interest
+  if (segment == 0) // if it was the first Interest
   {
     // in a next round try to transmit all Interests, except the first one
     m_currentWindowSize = m_finalBlockNumber;
@@ -295,7 +298,7 @@ ReliableDataRetrieval::onData(const ndn::Interest& interest, const ndn::Data& da
         }
       }
     }
-  }*/
+  }
 }
 
 void

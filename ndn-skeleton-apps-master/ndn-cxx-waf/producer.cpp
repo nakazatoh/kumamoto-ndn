@@ -51,12 +51,12 @@ public:
       uint64_t segment = interest.getName().get(-1).toSegment();
       m_segmentBuffer.insert(segment);
 
+      const uint8_t* m_buffer;
+      size_t m_bufferSize;
+      std::tie(m_buffer, m_bufferSize) = loadFile(filenameString);
+      contentProducer.produce(fileName, m_buffer, m_bufferSize);
       if(m_segmentBuffer.size() == m_finalBlockId + 1)
       {
-        const uint8_t* m_buffer;
-        size_t m_bufferSize;
-        std::tie(m_buffer, m_bufferSize) = loadFile(filenameString);
-        contentProducer.produce(fileName, m_buffer, m_bufferSize);
         std::cout << "bufferSize: " << m_bufferSize << std::endl;
         //std::cout << "Final Block ID: " << Producer::getFinalBlockIdFromBufferSize(m_contentPrefix.append(Name("test.png")), Name("/"), m_bufferSize) << std::endl;
         std::cout << "SENT PNG FILE" << std::endl;
@@ -98,11 +98,11 @@ int main(int argc, char* argv[])
 {
     CallbackContainer callback;
 
-    Name pilotProducerName("/test/producer/info");
-    Producer pilotProducer(pilotProducerName);
-    pilotProducer.setContextOption(CACHE_MISS, (ProducerInterestCallback)bind(&CallbackContainer::processInfoInterest, &callback, _1, _2));
-    pilotProducer.setContextOption(DATA_LEAVE_CNTX, (ProducerDataCallback)bind(&CallbackContainer::leavingInfoData, &callback, _1, _2));
-    pilotProducer.attach();
+//    Name pilotProducerName("/test/producer/info");
+//    Producer pilotProducer(pilotProducerName);
+//    pilotProducer.setContextOption(CACHE_MISS, (ProducerInterestCallback)bind(&CallbackContainer::processInfoInterest, &callback, _1, _2));
+//    pilotProducer.setContextOption(DATA_LEAVE_CNTX, (ProducerDataCallback)bind(&CallbackContainer::leavingInfoData, &callback, _1, _2));
+//    pilotProducer.attach();
 
     Name contentProducerName("/test/producer/content");
     callback.m_contentPrefix = contentProducerName;

@@ -79,13 +79,13 @@ int main(int argc, char* argv[])
 {
   CallbackContainer callback;
 
-  Name pilotConsumerName("test/producer/info");
-  Consumer pilotConsumer(pilotConsumerName, SDR);
-  pilotConsumer.setContextOption(MUST_BE_FRESH_S, true);
-  pilotConsumer.setContextOption(INTEREST_LIFETIME, 5000);
-  pilotConsumer.setContextOption(DATA_ENTER_CNTX, (ConsumerDataCallback)bind(&CallbackContainer::processInfoData, &callback, _1, _2));
-  pilotConsumer.setContextOption(INTEREST_LEAVE_CNTX, (ConsumerInterestCallback)bind(&CallbackContainer::leavingInfoInterest, &callback, _1, _2));
-  pilotConsumer.consume("test.png");
+//  Name pilotConsumerName("test/producer/info");
+//  Consumer pilotConsumer(pilotConsumerName, SDR);
+//  pilotConsumer.setContextOption(MUST_BE_FRESH_S, true);
+//  pilotConsumer.setContextOption(INTEREST_LIFETIME, 5000);
+//  pilotConsumer.setContextOption(DATA_ENTER_CNTX, (ConsumerDataCallback)bind(&CallbackContainer::processInfoData, &callback, _1, _2));
+//  pilotConsumer.setContextOption(INTEREST_LEAVE_CNTX, (ConsumerInterestCallback)bind(&CallbackContainer::leavingInfoInterest, &callback, _1, _2));
+//  pilotConsumer.consume("test.png");
 
   Name contentConsumerName("/test/producer/content");
   Name functionName("/A");
@@ -97,8 +97,8 @@ int main(int argc, char* argv[])
   contentConsumer.setContextOption(DATA_ENTER_CNTX, (ConsumerDataCallback)bind(&CallbackContainer::processContentData, &callback, _1, _2));
   contentConsumer.setContextOption(INTEREST_LEAVE_CNTX, (ConsumerInterestCallback)bind(&CallbackContainer::leavingContentInterest, &callback, _1, _2));
   contentConsumer.setContextOption(FUNCTION, functionName);
-  contentConsumer.setContextOption(FINAL_BLOCK_ID, callback.m_finalBlockId);
-  std::cout << callback.m_finalBlockId << std::endl;
+//  contentConsumer.setContextOption(FINAL_BLOCK_ID, callback.m_finalBlockId);
+//  std::cout << callback.m_finalBlockId << std::endl;
   contentConsumer.consume("test.png");
 
   return 0;

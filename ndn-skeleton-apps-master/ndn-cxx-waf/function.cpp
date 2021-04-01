@@ -82,7 +82,7 @@ private:
     //If new file is larger than original send Data for incoming interest
     uint64_t segment = interest.getName().get(-1).toSegment();
     m_interestSegmentCounter.insert(segment);
-    if(segment > m_finalBlockNumber)
+    if(segment > 0)
     {
       auto head = m_dataBuffer.find(segment);
       m_producer.produce(*(head->second));
@@ -108,8 +108,6 @@ private:
     std::cout << "Segment No.: " << data.getName().get(-1).toSegment() << std::endl;
     std::cout << "Final Block No.: " << m_finalBlockNumber << std::endl;
 
-    ndn::Function executedFunction(data.getFunction());
-
     //Add Segments to Buffer
     m_receiveBuffer[data.getName().get(-1).toSegment()] = data.shared_from_this();
     reassembleSegments();
@@ -123,9 +121,9 @@ private:
       std::cout << "Prefix: " << m_prefix << std::endl;
       std::cout << "Filename: " << m_filename << std::endl;
 
-      if(m_finalBlockNumber > m_interestSegmentCounter.size()-1)
+      if(m_finalBlockNumber > 0)
       {
-        for(uint64_t i = m_interestSegmentCounter.size(); i <= m_finalBlockNumber; i++)
+        for(uint64_t i = 1; i <= m_finalBlockNumber; i++)
         {
           ndn::Name name(m_prefix);
           name.appendSegment(i);
@@ -143,6 +141,7 @@ private:
 
     if(data.getName().get(-1).toSegment() == m_finalBlockNumber)
     {
+      ndn::Function executedFunction(data.getFunction());
       std::string outputFilename = data.getName().get(-2).toUri(); //"test.png"
       createFile(outputFilename);
 
@@ -206,16 +205,13 @@ private:
     std::cout << "Final Block ID: " << tmp_finalBlockNumber << std::endl;
     m_producer.setContextOption(FUNCTION, m_funcName);
     m_producer.attach();
-    if(tmp_finalBlockNumber > m_finalBlockNumber)
+    if(tmp_finalBlockNumber > 0)
     {
       m_largerFinalBlockNumber = tmp_finalBlockNumber;
       m_dataBuffer = m_producer.getDataSegmentMap(suffix, buffer, bufferSize, executedfunction);
-      for(uint64_t i = 0; i <= m_finalBlockNumber; i++)
-      {
-        auto head = m_dataBuffer.find(i);
-        m_producer.produce(*(head->second));
-        m_dataBuffer.erase(head);
-      }
+      auto head = m_dataBuffer.find(0);
+      m_producer.produce(*(head->second));
+      m_dataBuffer.erase(head);
     }
     else
     {
